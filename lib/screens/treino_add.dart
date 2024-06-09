@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_traintrax/components/decoration_input.dart';
 import 'package:flutter_traintrax/data/http/treino_service.dart';
-import 'package:flutter_traintrax/screens/home.dart';
 
 class TreinoAdd extends StatefulWidget {
   TreinoAdd({Key? key}) : super(key: key);
@@ -15,15 +14,13 @@ class _TreinoAddState extends State<TreinoAdd> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _diaSemanaController = TextEditingController();
   bool _showTreinoInfo = false;
+  bool _showAddExercicioButton = false; 
   bool _showForm = true;
   String _nomeTreino = '';
   String _diaSemana = '';
 
   void _adicionarTreino() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
 
       try {
         final treino = await TreinoService.addTreino(
@@ -36,6 +33,7 @@ class _TreinoAddState extends State<TreinoAdd> {
           _showForm = false; // Oculta o formulário após adicionar o treino
           _nomeTreino = treino.nome;
           _diaSemana = treino.diaSemana;
+          _showAddExercicioButton = true;
         });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -57,10 +55,17 @@ class _TreinoAddState extends State<TreinoAdd> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: _showForm ? _buildForm() : _buildTreinoInfo(),
+        child: _showForm ? _buildForm() :  Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildTreinoInfo(),
+              const SizedBox(height: 16),
+              _buildAddExercicioButton(),
+            ],
+        ),
       ),
-    );
-  }
+  );
+}
 
   Widget _buildForm() {
     return Form(
@@ -105,42 +110,67 @@ class _TreinoAddState extends State<TreinoAdd> {
             ),
           ),
           const SizedBox(height: 16),
-        ],
+        ]
       ),
     );
   }
 
   Widget _buildTreinoInfo() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Row(
-        children: [
-          Expanded(
-            child: Text(
-              _nomeTreino, 
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                _nomeTreino, 
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: Colors.purple[700],
+            IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: Colors.purple[700],
+              ),
+              iconSize: 30,
+              onPressed: () {
+                Navigator.pushNamed(context, '/treinoEdit');
+              },
             ),
-            iconSize: 30,
-            onPressed: () {
-              Navigator.pushNamed(context, '/treinoEdit');
-            },
+          ],
+        ),
+        const SizedBox(height: 8.0),
+        Text(
+          _diaSemana, 
+          style: TextStyle(fontSize: 16),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAddExercicioButton() {
+    if (_showAddExercicioButton) {
+      return ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/exercicioEdit',
+          );
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF7600F5)),
+        ),
+        child: const Text(
+          'Adicionar Exercício',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
           ),
-        ],
-      ),
-      const SizedBox(height: 8.0),
-      Text(
-        _diaSemana, 
-        style: TextStyle(fontSize: 16),
-      ),
-    ],
-  );
+        ),
+      );
+    } else {
+      return SizedBox.shrink(); 
+    }
+  }
 }
 
-}
