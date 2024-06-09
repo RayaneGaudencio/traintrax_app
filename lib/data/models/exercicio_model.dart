@@ -12,10 +12,10 @@ class ExercicioModel {
   });
 
   ExercicioModel.fromMap(Map<String, dynamic> map)
-    : id = map["id"],
-      nome = map["nome"],
-      series = map["series"],
-      repeticoes = map["repeticoes"];
+    : id = map["id"].toString(),
+      nome = map["nome"].toString(),
+      series = map["series"].toString(),
+      repeticoes = map["repeticoes"].toString();
 
   Map<String, dynamic> toMap() {
     return {

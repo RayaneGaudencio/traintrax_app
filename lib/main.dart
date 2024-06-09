@@ -3,6 +3,7 @@ import 'package:flutter_traintrax/screens/exercicio_add.dart';
 import 'package:flutter_traintrax/screens/exercicio_edit.dart';
 import 'package:flutter_traintrax/screens/home.dart';
 import 'package:flutter_traintrax/screens/treino_add.dart';
+import 'package:flutter_traintrax/screens/treino_added.dart';
 import 'package:flutter_traintrax/screens/treino_edit.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/exercicioAdd': (context) => const ExercicioAdd(),
         '/exercicioEdit': (context) => const ExercicioEdit(),
         '/treinoEdit': (context) => const TreinoEdit(),
+        TreinoAdded.routeName: (context) => const TreinoAdded(),
       },
     );
   }

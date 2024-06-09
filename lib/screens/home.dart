@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_traintrax/data/http/treino_service.dart';
 import 'package:flutter_traintrax/data/models/treino_model.dart';
+import 'package:flutter_traintrax/screens/ScreenArgument.dart';
+import 'package:flutter_traintrax/screens/treino_added.dart';
 
 void main() {
   runApp(Home());
@@ -53,28 +55,28 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.all(16.0),
         child: Container(
                 child: Expanded(
-                  child: ListView.builder(
-                    itemCount: listaTreinos.length,
-                    itemBuilder: (context, index) {
-                      TreinoModel treinoModel = listaTreinos[index];
-                       return Column(
+                  child:ListView.builder(
+                  itemCount: listaTreinos.length,
+                  itemBuilder: (context, index) {
+                    TreinoModel treinoModel = listaTreinos[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, TreinoAdded.routeName, arguments: ScreenArgument(treinoModel.id));
+                      },
+                      child: Column(
                         children: [
                           Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200], 
-                              borderRadius: BorderRadius.circular(10.0), 
-                            ),
                             child: ListTile(
-                                 contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
                               title: Text(treinoModel.nome),
-                              subtitle: Text(treinoModel.diaSemana)
+                              subtitle: Text(treinoModel.diaSemana),
                             ),
                           ),
-                          const SizedBox(height: 16), 
+                          const SizedBox(height: 16),
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
+                ),
                 ),
           ),
         ),
