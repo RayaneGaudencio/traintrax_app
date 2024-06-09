@@ -37,13 +37,19 @@ class _HomeState extends State<Home> {
 
    @override
   Widget build(BuildContext context) {
-    return Scaffold(
+  return Scaffold(
     appBar: AppBar(
       title: const Text(
         "Treino",
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: Color(0xFF7600F5),
+    ),
+    floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/treinoAdd');
+        },
+        child: const Icon(Icons.add),
     ),
     body: Padding(
       padding: EdgeInsets.all(16.0),
