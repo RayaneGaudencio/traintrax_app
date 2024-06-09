@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_traintrax/data/http/http_client.dart';
+import 'package:flutter_traintrax/data/http/treino_service.dart';
 import 'package:flutter_traintrax/data/models/treino_model.dart';
-import 'package:flutter_traintrax/data/repositories/treino_repository.dart';
-import 'package:flutter_traintrax/stores/treino_story.dart';
 
 void main() {
   runApp(Home());
@@ -16,18 +14,24 @@ class Home extends StatefulWidget {
 
 
 class _HomeState extends State<Home> {
-  final TreinoStore store = TreinoStore(
-    repository: TreinoRepository(
-    client: HttpClient()
-  ));
 
-  final List<TreinoModel> listaTreinos = [
-    TreinoModel(id: "id", nome: "nome", diaSemana: "diaSemana"),
-    TreinoModel(id: "id", nome: "nome", diaSemana: "diaSemana"),
-    TreinoModel(id: "id", nome: "nome", diaSemana: "diaSemana"),
-    TreinoModel(id: "id", nome: "nome", diaSemana: "diaSemana"),
-    TreinoModel(id: "id", nome: "nome", diaSemana: "diaSemana"),
-  ];
+  List<TreinoModel> listaTreinos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTreinos();
+  }
+
+  Future<void> _fetchTreinos() async {
+    try {
+      listaTreinos = await TreinoService.fetchTreinos();
+      setState(() {}); 
+    } on Exception catch (e) {
+      print('Erro ao carregar treinos: ${e}');
+    }
+  }
+
 
    @override
   Widget build(BuildContext context) {
@@ -63,17 +67,7 @@ class _HomeState extends State<Home> {
                             child: ListTile(
                                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
                               title: Text(treinoModel.nome),
-                              subtitle: Text(treinoModel.diaSemana),
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons.edit, 
-                                  color: Colors.purple, 
-                                ),
-                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                    context, '/treinoEdit');
-                                },
-                              ),
+                              subtitle: Text(treinoModel.diaSemana)
                             ),
                           ),
                           const SizedBox(height: 16), 
