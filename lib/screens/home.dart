@@ -38,49 +38,51 @@ class _HomeState extends State<Home> {
    @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Treino",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Color(0xFF7600F5),
+    appBar: AppBar(
+      title: const Text(
+        "Treino",
+        style: TextStyle(color: Colors.white),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/treinoAdd');
+      backgroundColor: Color(0xFF7600F5),
+    ),
+    body: Padding(
+      padding: EdgeInsets.all(16.0),
+      child: ListView.builder(
+        itemCount: listaTreinos.length,
+        itemBuilder: (context, index) {
+          TreinoModel treinoModel = listaTreinos[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, TreinoAdded.routeName, arguments: ScreenArgument(treinoModel.id));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                    title: Text(
+                      treinoModel.nome,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      treinoModel.diaSemana,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+              ],
+            ),
+          );
         },
-        child: const Icon(Icons.add),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Container(
-                child: Expanded(
-                  child:ListView.builder(
-                  itemCount: listaTreinos.length,
-                  itemBuilder: (context, index) {
-                    TreinoModel treinoModel = listaTreinos[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, TreinoAdded.routeName, arguments: ScreenArgument(treinoModel.id));
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            child: ListTile(
-                              title: Text(treinoModel.nome),
-                              subtitle: Text(treinoModel.diaSemana),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                ),
-          ),
-        ),
-      );
+    ),
+  );
   }
 }
 
