@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
   return Scaffold(
     appBar: AppBar(
       title: const Text(
-        "Treino",
+        "Treinos Adicionados",
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: Color(0xFF7600F5),

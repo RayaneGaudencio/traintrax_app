@@ -9,7 +9,7 @@ class TreinoEdit extends StatelessWidget {
    return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Exercício",
+          "Treino",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Color(0xFF7600F5),
